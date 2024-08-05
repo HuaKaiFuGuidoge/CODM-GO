@@ -59,51 +59,48 @@
 const openCODM = time => {
     const isSimplifiedChinese = navigator.language === 'zh-CN' || navigator.language.startsWith('zh');
 
-    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
-        setTimeout(() => {
-            if (isSimplifiedChinese) {
-                window.location.href = `codmcn://`;
-                window.location.href = 'https://apps.apple.com/cn/app/%E4%BD%BF%E5%91%BD%E5%8F%AC%E5%94%A4%E6%89%8B%E6%B8%B8/id1488410151';
-            } else {
-                window.location.href = `codm://`;
-                window.location.href = 'https://apps.apple.com/app/id1488556276'; 
+    const tryOpenURL = async (urls) => {
+        for (const url of urls) {
+            try {
+                window.location.href = url;
+                await new Promise((resolve, reject) => {
+                    const timer = setTimeout(() => reject(new Error('Timeout')), 3000);
+                    window.addEventListener('blur', () => {
+                        clearTimeout(timer);
+                        resolve();
+                    }, { once: true });
+                });
+                return; 
+            } catch (error) {
             }
-        }, time);
-    } else if (/Android/.test(navigator.userAgent)) {
-        setTimeout(() => {
-            if (isSimplifiedChinese) {
-                window.location.href = `codmcn://`;
-                window.location.href = 'appmarket://details?id=com.tencent.tmgp.cod';//华为
-                window.location.href = 'mimarket://details?id=com.tencent.tmgp.cod';//小米
-                window.location.href = 'samsungapps://ProductDetail/com.tencent.tmgp.cod';//三星
-                window.location.href = 'oppomarket://details?packagename=com.tencent.tmgp.cod';//oppo
-                window.location.href = 'vivomarket://details?id=com.tencent.tmgp.cod';//vivo
-            } else {
-                window.location.href = `codm://`;
-                window.location.href = 'samsungapps://details?id=com.garena.game.codm';//三星
-                window.location.href = 'https://play.google.com/store/apps/details?id=com.garena.game.codm';
-            }
-        }, time);
-    } else if (/Windows/.test(navigator.userAgent)) {
-        setTimeout(() => {
-            if (isSimplifiedChinese) {
-                window.location.href = 'https://codm.qq.com/main.shtml';
-            } else {
-                alert('CODM电脑端目前仅有中国服务器\nThe CODM computer terminal currently only has Chinese servers\n（如果你身处中国大陆看见此提示则代表你的浏览器语言并不是zh-CN）');
-            }
-        }, time);
-    } else {
-        setTimeout(() => {
-            if (isSimplifiedChinese) {
-                window.location.href = `codmcn://`;
-                window.location.href = 'https://codm.qq.com/main.shtml';
-            } else {
-                window.location.href = 'https://www.callofduty.com/mobile';
-                window.location.href = `codm://`;
-            }
-        }, time);
-    }
+        }
+    };
+
+    setTimeout(() => {
+        if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+            const iosUrls = isSimplifiedChinese
+                ? ['codmcn://', 'https://apps.apple.com/cn/app/%E4%BD%BF%E5%91%BD%E5%8F%AC%E5%94%A4%E6%89%8B%E6%B8%B8/id1488410151']
+                : ['codm://', 'https://apps.apple.com/app/id1488556276'];
+            tryOpenURL(iosUrls);
+        } else if (/Android/.test(navigator.userAgent)) {
+            const androidUrls = isSimplifiedChinese
+                ? ['codmcn://', 'appmarket://details?id=com.tencent.tmgp.cod', 'mimarket://details?id=com.tencent.tmgp.cod', 'samsungapps://ProductDetail/com.tencent.tmgp.cod', 'oppomarket://details?packagename=com.tencent.tmgp.cod', 'vivomarket://details?id=com.tencent.tmgp.cod']
+                : ['codm://', 'samsungapps://details?id=com.garena.game.codm', 'https://play.google.com/store/apps/details?id=com.garena.game.codm'];
+            tryOpenURL(androidUrls);
+        } else if (/Windows/.test(navigator.userAgent)) {
+            const windowsUrls = isSimplifiedChinese
+                ? ['https://codm.qq.com/main.shtml']
+                : ['https://codm.qq.com/main.shtml', 'https://www.callofduty.com/mobile'];
+            tryOpenURL(windowsUrls);
+        } else {
+            const otherUrls = isSimplifiedChinese
+                ? ['codmcn://', 'https://codm.qq.com/main.shtml']
+                : ['https://www.callofduty.com/mobile', 'codm://'];
+            tryOpenURL(otherUrls);
+        }
+    }, time);
 };
+
 
 
 
