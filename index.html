@@ -64,7 +64,7 @@ const openCODM = time => {
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
         setTimeout(() => {
             const gameURLScheme = isSimplifiedChinese ? gameURLSchemeCN : gameURLSchemeGlobal;
-            window.location.href = `codm://${gameURLScheme}`;
+            window.location.href = `${gameURLScheme}`;
             if (isSimplifiedChinese) {
                 window.location.href = 'https://apps.apple.com/cn/app/%E4%BD%BF%E5%91%BD%E5%8F%AC%E5%94%A4%E6%89%8B%E6%B8%B8/id1488410151';
             } else {
@@ -77,8 +77,13 @@ const openCODM = time => {
             const intentURI = `intent://${gameURLScheme}#Intent;package=${gameURLScheme};end`;
             window.location.href = intentURI;
             if (isSimplifiedChinese) {
-                window.location.href = 'https://app.mi.com/details?id=com.tencent.tmgp.cod&ref=search';
+                window.location.href = 'appmarket://details?id=com.tencent.tmgp.cod';//华为
+                window.location.href = 'mimarket://details?id=com.tencent.tmgp.cod';//小米
+                window.location.href = 'samsungapps://ProductDetail/com.tencent.tmgp.cod';//三星
+                window.location.href = 'oppomarket://details?packagename=com.tencent.tmgp.cod';//oppo
+                window.location.href = 'vivomarket://details?id=com.tencent.tmgp.cod';//vivo
             } else {
+                window.location.href = 'samsungapps://details?id=com.garena.game.codm';//三星
                 window.location.href = 'https://play.google.com/store/apps/details?id=com.garena.game.codm';
             }
         }, time);
@@ -95,7 +100,7 @@ const openCODM = time => {
             if (isSimplifiedChinese) {
                 window.location.href = 'https://codm.qq.com/main.shtml';
             } else {
-                alert('CODM电脑端目前仅有中国服务器\nThe CODM computer terminal currently only has Chinese servers\n（如果你身处中国大陆看见此提示则代表你的浏览器语言并不是zh-CN）');
+                window.location.href = 'https://www.callofduty.com/mobile';
             }
         }, time);
     }
