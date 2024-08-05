@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CODM，启动！</title>
+    <link rel="shortcut icon" href="./WebLogo.png" type="image/x-icon">
+    <style>
+    * {
+        padding: 0;
+        margin: 0;
+        box-sizing: border-box;
+    }
+    
+    .load {
+        width: 100vw;
+        height: 100vh;
+        display: grid;
+        place-items: center;
+        opacity: 0;
+        animation: getLoad 3s;
+        animation-play-state: paused;
+    }
+    
+    .activate {
+        animation-play-state: running;
+    }
+    
+    @keyframes getLoad {
+        0% {
+            opacity: 0;
+        }
+    
+        40% {
+            opacity: 1;
+        }
+    
+        100% {
+            opacity: 0;
+            display: none;
+        }
+    }
+    
+    .load img {
+        max-width: 70%;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="load">
+        <img src="./logo.png">
+    </div>
+    <audio src="./go.mp3"></audio>
+
+    <script src="https://cdn.staticfile.org/sweetalert/2.1.2/sweetalert.min.js"></script>
+    <script>
+const openCODM = time => {
+    const gameURLSchemeCN = 'com.tencent.tmgp.cod';
+    const gameURLSchemeGlobal = 'com.garena.game.codm';
+    const isSimplifiedChinese = navigator.language === 'zh-CN' || navigator.language.startsWith('zh');
+
+    if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+        setTimeout(() => {
+            const gameURLScheme = isSimplifiedChinese ? gameURLSchemeCN : gameURLSchemeGlobal;
+            window.location.href = `codm://${gameURLScheme}`;
+            if (isSimplifiedChinese) {
+                window.location.href = 'https://apps.apple.com/cn/app/%E4%BD%BF%E5%91%BD%E5%8F%AC%E5%94%A4%E6%89%8B%E6%B8%B8/id1488410151';
+            } else {
+                window.location.href = 'https://apps.apple.com/app/id1488556276'; 
+            }
+        }, time);
+    } else if (/Android/.test(navigator.userAgent)) {
+        setTimeout(() => {
+            const gameURLScheme = isSimplifiedChinese ? gameURLSchemeCN : gameURLSchemeGlobal;
+            const intentURI = `intent://${gameURLScheme}#Intent;package=${gameURLScheme};end`;
+            window.location.href = intentURI;
+            if (isSimplifiedChinese) {
+                window.location.href = 'https://app.mi.com/details?id=com.tencent.tmgp.cod&ref=search';
+            } else {
+                window.location.href = 'https://play.google.com/store/apps/details?id=com.garena.game.codm';
+            }
+        }, time);
+    } else if (/Windows/.test(navigator.userAgent)) {
+        setTimeout(() => {
+            if (isSimplifiedChinese) {
+                window.location.href = 'https://codm.qq.com/main.shtml';
+            } else {
+                alert('CODM电脑端目前仅有中国服务器\nThe CODM computer terminal currently only has Chinese servers\n（如果你身处中国大陆看见此提示则代表你的浏览器语言并不是zh-CN）');
+            }
+        }, time);
+    } else {
+        setTimeout(() => {
+            if (isSimplifiedChinese) {
+                window.location.href = 'https://codm.qq.com/main.shtml';
+            } else {
+                alert('CODM电脑端目前仅有中国服务器\nThe CODM computer terminal currently only has Chinese servers\n（如果你身处中国大陆看见此提示则代表你的浏览器语言并不是zh-CN）');
+            }
+        }, time);
+    }
+};
+
+
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const audio = document.querySelector('audio')
+            const load = document.querySelector('.load')
+
+            swal({
+                title: '',
+                text: '确定启动么？',
+                icon: 'warning',
+                button: '确定',
+                closeOnClickOutside: false,
+            }).then(() => {
+                document.body.addEventListener('click', () => {
+                    load.classList.add('activate')
+                    audio.play()
+                    openCODM(3500)
+                })
+            })
+        })
+    </script>
+</body>
+
+</html>
