@@ -57,8 +57,8 @@
     <script src="https://cdn.staticfile.org/sweetalert/2.1.2/sweetalert.min.js"></script>
     <script>
 const openCODM = time => {
-    const gameURLSchemeCN = 'com.tencent.tmgp.cod';
-    const gameURLSchemeGlobal = 'com.garena.game.codm';
+    const gameURLSchemeCN = 'codmcn://';
+    const gameURLSchemeGlobal = 'codm://';
     const isSimplifiedChinese = navigator.language === 'zh-CN' || navigator.language.startsWith('zh');
 
     if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
@@ -74,7 +74,7 @@ const openCODM = time => {
     } else if (/Android/.test(navigator.userAgent)) {
         setTimeout(() => {
             const gameURLScheme = isSimplifiedChinese ? gameURLSchemeCN : gameURLSchemeGlobal;
-            const intentURI = `intent://${gameURLScheme}#Intent;package=${gameURLScheme};end`;
+            const intentURI = `${gameURLScheme}`;
             window.location.href = intentURI;
             if (isSimplifiedChinese) {
                 window.location.href = 'appmarket://details?id=com.tencent.tmgp.cod';//华为
